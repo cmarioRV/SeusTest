@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{EABB1950-762A-4608-B35C-99BFA5391876}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>demoseusapp</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ServiceLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Item.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\CloudDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\MockDataStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\AboutViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\BaseViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemDetailViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ItemsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)App.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TokenResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\TokenRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AutenticateRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AuthorizeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\InvalidTokenRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\ClientJsonResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\HTTPErrorHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\RestConsumerJson.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\ClientFormUrlEncodeResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\Base\BaseRestConsumer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\Base\BaseFormUrlEncodeRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repositories\IManagerHttpMessageResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repositories\Seus\ISeusRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repositories\Seus\SeusRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitors\ManagerHttpFormUrlEncode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitors\ManagerHttpJsonResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SeusViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Repositories\Seus\MockSeusRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\AutenticateResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Crypt\Cryptography.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Crypt\SHA256Cryptography.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Crypt\ICryptography.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\ExpiredTokenException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserInfoResponse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Repositories\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Repositories\Seus\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Crypt\" />
+  </ItemGroup>
+</Project>
