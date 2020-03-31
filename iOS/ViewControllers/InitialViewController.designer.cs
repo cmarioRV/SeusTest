@@ -28,6 +28,12 @@ namespace demoseusapp.iOS
 		UIKit.UILabel emailLabel { get; set; }
 
 		[Outlet]
+		UIKit.UIButton hideLoadingViewButton { get; set; }
+
+		[Outlet]
+		UIKit.UIView loadingView { get; set; }
+
+		[Outlet]
 		UIKit.UILabel msgLabel { get; set; }
 
 		[Outlet]
@@ -38,6 +44,9 @@ namespace demoseusapp.iOS
 
 		[Outlet]
 		UIKit.UIButton updateButton { get; set; }
+
+		[Action ("hideLoadingViewAction:")]
+		partial void hideLoadingViewAction (Foundation.NSObject sender);
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -46,24 +55,14 @@ namespace demoseusapp.iOS
 				accessTokenLabel = null;
 			}
 
+			if (activityIndicatorView != null) {
+				activityIndicatorView.Dispose ();
+				activityIndicatorView = null;
+			}
+
 			if (caduceTimeLabel != null) {
 				caduceTimeLabel.Dispose ();
 				caduceTimeLabel = null;
-			}
-
-			if (refreshTokenLabel != null) {
-				refreshTokenLabel.Dispose ();
-				refreshTokenLabel = null;
-			}
-
-			if (updateButton != null) {
-				updateButton.Dispose ();
-				updateButton = null;
-			}
-
-			if (nameLabel != null) {
-				nameLabel.Dispose ();
-				nameLabel = null;
 			}
 
 			if (dniLabel != null) {
@@ -76,14 +75,34 @@ namespace demoseusapp.iOS
 				emailLabel = null;
 			}
 
-			if (activityIndicatorView != null) {
-				activityIndicatorView.Dispose ();
-				activityIndicatorView = null;
-			}
-
 			if (msgLabel != null) {
 				msgLabel.Dispose ();
 				msgLabel = null;
+			}
+
+			if (nameLabel != null) {
+				nameLabel.Dispose ();
+				nameLabel = null;
+			}
+
+			if (refreshTokenLabel != null) {
+				refreshTokenLabel.Dispose ();
+				refreshTokenLabel = null;
+			}
+
+			if (updateButton != null) {
+				updateButton.Dispose ();
+				updateButton = null;
+			}
+
+			if (loadingView != null) {
+				loadingView.Dispose ();
+				loadingView = null;
+			}
+
+			if (hideLoadingViewButton != null) {
+				hideLoadingViewButton.Dispose ();
+				hideLoadingViewButton = null;
 			}
 		}
 	}

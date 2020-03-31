@@ -11,6 +11,7 @@ namespace demoseusapp.iOS
     public partial class InitialViewController : UIViewController
 	{
         private SeusViewModel viewModel { get; set; }
+        private bool thereWasAnError;
 
         public InitialViewController (IntPtr handle) : base (handle)
 		{
@@ -21,9 +22,25 @@ namespace demoseusapp.iOS
             base.ViewDidLoad();
 
             updateButton.TouchUpInside += UpdateButton_TouchUpInside;
+            hideLoadingViewButton.TouchUpInside += HideLoadingViewButton_TouchUpInside;
 
             viewModel = new SeusViewModel(new Storage());
             viewModel.PropertyChanged += IsBusy_PropertyChanged;
+
+            accessTokenLabel.Text = string.Empty;
+            refreshTokenLabel.Text = string.Empty;
+            caduceTimeLabel.Text = string.Empty;
+            nameLabel.Text = string.Empty;
+            dniLabel.Text = string.Empty;
+            emailLabel.Text = string.Empty;
+        }
+
+        private void HideLoadingViewButton_TouchUpInside(object sender, EventArgs e)
+        {
+            InvokeOnMainThread(() =>
+            {
+                loadingView.Hidden = true;
+            });
         }
 
         private void UpdateButton_TouchUpInside(object sender, EventArgs e)
@@ -48,20 +65,16 @@ namespace demoseusapp.iOS
                         {
                             if (viewModel.IsBusy)
                             {
-                                accessTokenLabel.Text = string.Empty;
-                                refreshTokenLabel.Text = string.Empty;
-                                caduceTimeLabel.Text = string.Empty;
-                                nameLabel.Text = string.Empty;
-                                dniLabel.Text = string.Empty;
-                                emailLabel.Text = string.Empty;
-
                                 activityIndicatorView.StartAnimating();
-                                updateButton.Enabled = false;
+                                activityIndicatorView.Hidden = false;
+                                loadingView.Hidden = false;
+                                hideLoadingViewButton.Hidden = true;
                             }
                             else
                             {
                                 activityIndicatorView.StopAnimating();
-                                updateButton.Enabled = true;
+                                loadingView.Hidden = !thereWasAnError;
+                                hideLoadingViewButton.Hidden = !thereWasAnError;
                             }
                         });
                     }
@@ -119,6 +132,14 @@ namespace demoseusapp.iOS
                         InvokeOnMainThread(() =>
                         {
                             msgLabel.Text = viewModel.UserMsg;
+                        });
+                    }
+                    break;
+                case nameof(viewModel.ThereWasAnError):
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            thereWasAnError = viewModel.ThereWasAnError;
                         });
                     }
                     break;

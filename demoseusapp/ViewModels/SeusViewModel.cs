@@ -63,52 +63,73 @@ namespace demoseusapp.ViewModels
             set { SetProperty(ref userMsg, value); }
         }
 
+        bool thereWasAnError;
+        public bool ThereWasAnError
+        {
+            get { return thereWasAnError; }
+            set { SetProperty(ref thereWasAnError, value); }
+        }
+
         public SeusViewModel(IStorage storage): base(storage)
         {
             Title = "Dummy";
-            DummyActionCommand = new Command(() => ExecuteDummyActionCommand());
+            DummyActionCommand = new Command(async() => await ExecuteDummyActionCommand());
 
             cryptographic = new SHA256Cryptography();
             this.storage = storage;
         }
 
-        private void ExecuteDummyActionCommand()
+        private async Task ExecuteDummyActionCommand()
         {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
+            await Task.Factory.StartNew(() =>
             {
-                DateTime now = DateTime.Now;
+                if (IsBusy)
+                    return;
 
-                var expirationDate = new DateTime(storage.GetExpiresIn());
+                IsBusy = true;
+                ThereWasAnError = false;
 
-                if (!string.IsNullOrEmpty(storage.GetAccessToken()) && now.CompareTo(expirationDate) > 0)
+                try
                 {
-                    UserMsg = "Refrescando token...";
-                    StoreResponse(Repository.RefreshToken(storage.GetRefreshToken()));
-                }
-                else
-                {
-                    UserMsg = "Autenticando...";
-                    Login();
-                    UserInfoResponse userInfoResponse = Repository.GetUserInfo(storage.GetAccessToken());
+                    DateTime now = DateTime.Now;
 
-                    Name = userInfoResponse.FullName;
-                    Dni = userInfoResponse.Dni;
-                    Email = userInfoResponse.Email;
+                    var expirationDate = new DateTime(storage.GetExpiresIn());
+
+                    if (!string.IsNullOrEmpty(storage.GetAccessToken()) && now.CompareTo(expirationDate) > 0)
+                    {
+                        UserMsg = "Refrescando token...";
+                        StoreResponse(Repository.RefreshToken(storage.GetRefreshToken()));
+                    }
+                    else
+                    {
+                        Login();
+
+                        UserMsg = "Obteniendo info del usuario...";
+                        UserInfoResponse userInfoResponse = Repository.GetUserInfo(storage.GetAccessToken());
+
+                        Name = userInfoResponse.FullName;
+                        Dni = userInfoResponse.Dni;
+                        Email = userInfoResponse.Email;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
+                catch (TaskCanceledException ex)
+                {
+                    Debug.WriteLine(ex);
+                    UserMsg = "Timeout";
+                    ThereWasAnError = true;
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                    UserMsg = ex.Message;
+                    storage.SetAccessToken("");
+                    ThereWasAnError = true;
+                }
+                finally
+                {
+                    IsBusy = false;
+                }
+            });
         }
 
         private void Login()
@@ -116,10 +137,13 @@ namespace demoseusapp.ViewModels
             string codeVerify = cryptographic.GenerateRandomValue(64);
             string codeChallenge = cryptographic.EncryptValue(codeVerify);
 
+            UserMsg = "Autorizando...";
             AuthorizeResponse authorizeResponse = Repository.Authorize(codeChallenge);
             AutenticateRequest autenticateRequest = CreateAutenticateRequest("C", "43209598", "4194", authorizeResponse.SessionId);
+            UserMsg = "Autenticando...";
             AutenticateResponse autenticateResponse = GetAutenticateResponse(autenticateRequest);
             TokenRequest tokenRequest = CreateTokenRequest(codeVerify, autenticateResponse);
+            UserMsg = "Obteniendo token...";
             TokenResponse tokenResponse = Repository.Token(tokenRequest);
 
             StoreResponse(tokenResponse);
@@ -133,7 +157,7 @@ namespace demoseusapp.ViewModels
 
             AccessToken = tokenResponse.AccessToken;
             RefreshToken = tokenResponse.RefreshToken;
-            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToShortDateString();
+            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLongTimeString();
         }
 
         public AutenticateRequest CreateAutenticateRequest(string documentType, string documentNumber, string password, string sessionId)
@@ -170,9 +194,14 @@ namespace demoseusapp.ViewModels
                 autenticateResponse = ProcessResponseAutenticate(codeResponse);
             }
 
-            if (!codeResponseValid || (autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))
+            if (!codeResponseValid)
             {
-                throw new Exception();
+                throw new Exception("Código inválido");
+            }
+
+            if((autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))
+            {
+                throw new Exception("Respuesta de autenticación nula");
             }
 
             return autenticateResponse;

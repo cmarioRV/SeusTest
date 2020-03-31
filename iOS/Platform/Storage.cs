@@ -20,6 +20,7 @@ namespace demoseusapp.iOS.Platform
         public void SetAccessToken(string accessToken)
         {
             userDefaults.SetString(accessToken, ACCESS_TOKEN);
+            userDefaults.Synchronize();
         }
 
         public string GetAccessToken()
@@ -30,6 +31,7 @@ namespace demoseusapp.iOS.Platform
         public void SetRefreshToken(string refreshToken)
         {
             userDefaults.SetString(refreshToken, REFRESH_TOKEN);
+            userDefaults.Synchronize();
         }
 
         public string GetRefreshToken()
@@ -40,6 +42,7 @@ namespace demoseusapp.iOS.Platform
         public void SetExpiresIn(long expiresIn)
         {
             userDefaults.SetFloat(expiresIn, EXPIRES_IN);
+            userDefaults.Synchronize();
         }
 
         public long GetExpiresIn()

@@ -17,7 +17,7 @@ namespace demoseusapp
                 return serializedObject;
             }
 
-            throw new System.Exception();
+            throw new System.Exception("Status code: " + response.StatusCode + ", Response: " + response.ToString());
         }
     }
 }

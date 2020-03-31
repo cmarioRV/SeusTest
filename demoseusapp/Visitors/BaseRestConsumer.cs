@@ -40,7 +40,7 @@ namespace demoseusapp
             response = client.SendAsync(request).Result;
             return ManageResponseMessages(response);
 
-            throw new Exception();
+            throw new Exception("Error consumiendo el servicio");
         }
 
         protected abstract TResponse ManageResponseMessages(HttpResponseMessage response);
