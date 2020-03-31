@@ -12,7 +12,7 @@ namespace demoseusapp
         private const string mediaType = "application/json";
         private IManagerHttpMessageResponse<TResponse> managerMessageResponse;
 
-        public RestConsumerJson(HttpClientHandler handler, IStorage storage) : base(handler, storage)
+        public RestConsumerJson(NSUrlSessionHandler handler, IStorage storage) : base(handler, storage)
         {
             managerMessageResponse = new ManagerHttpJsonResponse<TResponse>();
         }

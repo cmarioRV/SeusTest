@@ -29,12 +29,15 @@ namespace demoseusapp
         protected string urlBase;
         protected string fullUrl;
 
-        protected readonly HttpClientHandler httpClientHandler;
+        protected readonly NSUrlSessionHandler httpClientHandler;
         protected IStorage storage;
 
         public SeusRepository()
         {
             urlBase = string.Format("{0}{1}", baseSeusURL, accountRootEndpoint);
+
+            httpClientHandler = new NSUrlSessionHandler();
+            httpClientHandler.AllowAutoRedirect = false;
         }
 
         public void SetStorage(IStorage storage)

@@ -10,7 +10,7 @@ namespace demoseusapp
     {
         private string contentType;
 
-        public BaseFormUrlEncodeRequest(HttpClientHandler handler, IStorage storage) : base(handler, storage)
+        public BaseFormUrlEncodeRequest(NSUrlSessionHandler handler, IStorage storage) : base(handler, storage)
         {
         }
 

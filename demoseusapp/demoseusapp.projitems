@@ -29,7 +29,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\HTTPErrorHandler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\RestConsumerJson.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\ClientFormUrlEncodeResponse.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\Base\BaseRestConsumer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RestConsumer\Base\BaseFormUrlEncodeRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Repositories\IManagerHttpMessageResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Repositories\Seus\ISeusRepository.cs" />
@@ -45,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\ExpiredTokenException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\IStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserInfoResponse.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Visitors\BaseRestConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Repositories\" />

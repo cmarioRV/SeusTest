@@ -7,7 +7,7 @@ namespace demoseusapp
     {
         private readonly IManagerHttpMessageResponse<string> managerMessageResponse;
 
-        public ClientFormUrlEncodeResponse(HttpClientHandler handler, IStorage storage) : base(handler, storage)
+        public ClientFormUrlEncodeResponse(NSUrlSessionHandler handler, IStorage storage) : base(handler, storage)
         {
             managerMessageResponse = new ManagerHttpFormUrlEncode();
         }

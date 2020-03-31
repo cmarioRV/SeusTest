@@ -14,8 +14,6 @@ namespace demoseusapp
 
         public ISeusRepository Repository => ServiceLocator.Instance.Get<ISeusRepository>() ?? new MockSeusRepository();
 
-        private readonly IStorage storage;
-
         bool isBusy = false;
         public bool IsBusy
         {
@@ -30,7 +28,7 @@ namespace demoseusapp
             set { SetProperty(ref title, value); }
         }
 
-        public BaseViewModel(IStorage stogate)
+        public BaseViewModel(IStorage storage)
         {
             Repository.SetStorage(storage);
         }

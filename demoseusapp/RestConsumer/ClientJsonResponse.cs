@@ -7,7 +7,7 @@ namespace demoseusapp
     {
         private IManagerHttpMessageResponse<T> managerMessageResponse;
 
-        public ClientJsonResponse(HttpClientHandler handler, IStorage storage) : base(handler, storage)
+        public ClientJsonResponse(NSUrlSessionHandler handler, IStorage storage) : base(handler, storage)
         {
             managerMessageResponse = new ManagerHttpJsonResponse<T>();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using demoseusapp.Models;
 using demoseusapp.Services;
 using Newtonsoft.Json;
 
@@ -13,10 +14,58 @@ namespace demoseusapp.ViewModels
         private readonly ICryptography cryptographic;
         private readonly IStorage storage;
 
+        string accessToken = string.Empty;
+        public string AccessToken
+        {
+            get { return accessToken; }
+            set { SetProperty(ref accessToken, value); }
+        }
+
+        string refreshToken = string.Empty;
+        public string RefreshToken
+        {
+            get { return refreshToken; }
+            set { SetProperty(ref refreshToken, value); }
+        }
+
+        string validTime = string.Empty;
+        public string ValidTime
+        {
+            get { return validTime; }
+            set { SetProperty(ref validTime, value); }
+        }
+
+        string name = string.Empty;
+        public string Name
+        {
+            get { return name; }
+            set { SetProperty(ref name, value); }
+        }
+
+        string dni = string.Empty;
+        public string Dni
+        {
+            get { return dni; }
+            set { SetProperty(ref dni, value); }
+        }
+
+        string email = string.Empty;
+        public string Email
+        {
+            get { return email; }
+            set { SetProperty(ref email, value); }
+        }
+
+        string userMsg = string.Empty;
+        public string UserMsg
+        {
+            get { return userMsg; }
+            set { SetProperty(ref userMsg, value); }
+        }
+
         public SeusViewModel(IStorage storage): base(storage)
         {
             Title = "Dummy";
-            //DummyActionCommand = new Command(async () => await ExecuteDummyActionCommand());
             DummyActionCommand = new Command(() => ExecuteDummyActionCommand());
 
             cryptographic = new SHA256Cryptography();
@@ -36,14 +85,20 @@ namespace demoseusapp.ViewModels
 
                 var expirationDate = new DateTime(storage.GetExpiresIn());
 
-                if (now.CompareTo(expirationDate) > 0)
+                if (!string.IsNullOrEmpty(storage.GetAccessToken()) && now.CompareTo(expirationDate) > 0)
                 {
-                    RefreshToken();
+                    UserMsg = "Refrescando token...";
+                    StoreResponse(Repository.RefreshToken(storage.GetRefreshToken()));
                 }
                 else
                 {
+                    UserMsg = "Autenticando...";
                     Login();
-                    Repository.GetUserInfo(storage.GetAccessToken());
+                    UserInfoResponse userInfoResponse = Repository.GetUserInfo(storage.GetAccessToken());
+
+                    Name = userInfoResponse.FullName;
+                    Dni = userInfoResponse.Dni;
+                    Email = userInfoResponse.Email;
                 }
             }
             catch (Exception ex)
@@ -70,16 +125,15 @@ namespace demoseusapp.ViewModels
             StoreResponse(tokenResponse);
         }
 
-        private void RefreshToken()
-        {
-            StoreResponse(Repository.RefreshToken(storage.GetRefreshToken()));
-        }
-
         private void StoreResponse(TokenResponse tokenResponse)
         {
             storage.SetAccessToken(tokenResponse.AccessToken);
             storage.SetRefreshToken(tokenResponse.RefreshToken);
             storage.SetExpiresIn(DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).Ticks);
+
+            AccessToken = tokenResponse.AccessToken;
+            RefreshToken = tokenResponse.RefreshToken;
+            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToShortDateString();
         }
 
         public AutenticateRequest CreateAutenticateRequest(string documentType, string documentNumber, string password, string sessionId)

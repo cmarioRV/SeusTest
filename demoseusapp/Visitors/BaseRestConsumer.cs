@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using demoseusapp.Repositories;
 using demoseusapp.Services;
 
@@ -19,11 +20,11 @@ namespace demoseusapp
 
         private HttpResponseMessage response;
 
-        protected BaseRestConsumer(HttpClientHandler handler, IStorage storage)
+        protected BaseRestConsumer(NSUrlSessionHandler handler, IStorage storage)
         {
             this.storage = storage;
 
-            client = new HttpClient()
+            client = new HttpClient(handler)
             {
                 Timeout = TimeSpan.FromSeconds(timeOutInSeconds)
             };
@@ -50,7 +51,8 @@ namespace demoseusapp
             if (addAuthorization)
             {
                 string accessToken = storage.GetAccessToken();
-                client.DefaultRequestHeaders.Add(authorizationHeader, accessToken);
+                //client.DefaultRequestHeaders.Add(authorizationHeader, accessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             }
 
             if (headers != null)

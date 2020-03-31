@@ -135,6 +135,10 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Platform\Storage.cs" />
+    <Compile Include="ViewControllers\InitialViewController.cs" />
+    <Compile Include="ViewControllers\InitialViewController.designer.cs">
+      <DependentUpon>InitialViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
