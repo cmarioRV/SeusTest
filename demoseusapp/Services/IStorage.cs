@@ -2,6 +2,12 @@
 {
     public interface IStorage
     {
+        void SetUserId(string userId);
+        string GetUserId();
+
+        void SetPassword(string password);
+        string GetPassword();
+
         void SetAccessToken(string accessToken);
         string GetAccessToken();
 

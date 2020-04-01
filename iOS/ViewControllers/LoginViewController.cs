@@ -32,6 +32,16 @@ namespace demoseusapp.iOS
             popUpButton.TouchUpInside += (_, e) => InvokeOnMainThread(() => loadingView.Hidden = true);
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+
+            if(!string.IsNullOrEmpty(storage.GetAccessToken()))
+            {
+                loginViewModel.LoginActionCommand.Execute(new UserModel { userId = storage.GetUserId(), password = storage.GetPassword() });
+            }
+        }
+
         private void IsBusy_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var propertyName = e.PropertyName;
@@ -44,27 +54,21 @@ namespace demoseusapp.iOS
                             if (loginViewModel.IsBusy)
                             {
                                 ShowLoadingView();
+                                return;
+                            }
+
+                            if (string.IsNullOrEmpty(loginViewModel.ErrorMessage))
+                            {
+                                HideLoadingView();
+
+                                storage.SetUserId(userTextField.Text);
+                                storage.SetPassword(passwordTextField.Text);
+
+                                ShowDetailViewController();
                             }
                             else
                             {
-                                if (string.IsNullOrEmpty(loginViewModel.ErrorMessage))
-                                {
-                                    HideLoadingView();
-                                    var detailViewController = UIStoryboard.FromName("Main", null).InstantiateViewController(nameof(DetailViewController)) as DetailViewController;
-
-                                    detailViewController.AccessToken = storage.GetAccessToken();
-                                    detailViewController.RefreshToken = storage.GetRefreshToken();
-
-                                    long expirationDate;
-                                    bool success = long.TryParse(storage.GetExpiresIn(), out expirationDate);
-                                    detailViewController.CaduceIn = new DateTime(expirationDate).ToLongTimeString();
-
-                                    PresentViewController(detailViewController, true, null);
-                                }
-                                else
-                                {
-                                    ShowError(loginViewModel.ErrorMessage);
-                                }
+                                ShowError(loginViewModel.ErrorMessage);
                             }
                         });
                     }
@@ -78,6 +82,20 @@ namespace demoseusapp.iOS
                     }
                     break;
             }
+        }
+
+        private void ShowDetailViewController()
+        {
+            var detailViewController = UIStoryboard.FromName("Main", null).InstantiateViewController(nameof(DetailViewController)) as DetailViewController;
+
+            detailViewController.AccessToken = storage.GetAccessToken();
+            detailViewController.RefreshToken = storage.GetRefreshToken();
+
+            long expirationDate;
+            bool success = long.TryParse(storage.GetExpiresIn(), out expirationDate);
+            detailViewController.CaduceIn = new DateTime(expirationDate).ToLongTimeString();
+
+            PresentViewController(detailViewController, true, null);
         }
 
         private void ShowError(string errorMessage)
@@ -105,7 +123,7 @@ namespace demoseusapp.iOS
 
         private void LoginButton_TouchUpInside(object sender, EventArgs e)
         {
-            loginViewModel.LoginActionCommand.Execute(new UserModel { userId = userMsgLabel.Text, password = passwordTextField.Text });
+            loginViewModel.LoginActionCommand.Execute(new UserModel { userId = userTextField.Text, password = passwordTextField.Text });
         }
     }
 }

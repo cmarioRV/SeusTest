@@ -58,6 +58,29 @@ namespace demoseusapp.iOS
             detailViewModel.GetInfoActionCommand.Execute(null);
         }
 
+        private void ShowLoadingView()
+        {
+            loadingView.Hidden = false;
+            activityIndicatorView.StartAnimating();
+            activityIndicatorView.Hidden = false;
+            hideLoadingViewButton.Hidden = true;
+        }
+
+        private void HideLoadingView()
+        {
+            activityIndicatorView.StopAnimating();
+            loadingView.Hidden = true;
+        }
+
+        private void ShowError(string errorMessage)
+        {
+            loadingView.Hidden = false;
+            activityIndicatorView.StopAnimating();
+            activityIndicatorView.Hidden = true;
+            hideLoadingViewButton.Hidden = false;
+            msgLabel.Text = errorMessage;
+        }
+
         void IsBusy_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             var propertyName = e.PropertyName;
@@ -69,16 +92,17 @@ namespace demoseusapp.iOS
                         {
                             if (detailViewModel.IsBusy)
                             {
-                                activityIndicatorView.StartAnimating();
-                                activityIndicatorView.Hidden = false;
-                                loadingView.Hidden = false;
-                                hideLoadingViewButton.Hidden = true;
+                                ShowLoadingView();
+                                return;
+                            }
+
+                            if (string.IsNullOrEmpty(detailViewModel.ErrorMessage))
+                            {
+                                HideLoadingView();
                             }
                             else
                             {
-                                activityIndicatorView.StopAnimating();
-                                loadingView.Hidden = !thereWasAnError;
-                                hideLoadingViewButton.Hidden = !thereWasAnError;
+                                ShowError(detailViewModel.ErrorMessage);
                             }
                         });
                     }
@@ -136,14 +160,6 @@ namespace demoseusapp.iOS
                         InvokeOnMainThread(() =>
                         {
                             msgLabel.Text = detailViewModel.UserMsg;
-                        });
-                    }
-                    break;
-                case nameof(detailViewModel.ThereWasAnError):
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            thereWasAnError = detailViewModel.ThereWasAnError;
                         });
                     }
                     break;

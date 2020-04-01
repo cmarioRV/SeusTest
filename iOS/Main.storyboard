@@ -267,6 +267,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.65000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="LTO-jQ-AwW" firstAttribute="centerX" secondItem="3HE-Re-QDG" secondAttribute="centerX" id="84I-Ys-Tcp"/>
+                                    <constraint firstItem="LTO-jQ-AwW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="3HE-Re-QDG" secondAttribute="top" constant="30" id="otx-dZ-Ayb"/>
                                     <constraint firstItem="LTO-jQ-AwW" firstAttribute="centerY" secondItem="3HE-Re-QDG" secondAttribute="centerY" id="pFy-Rj-jDm"/>
                                     <constraint firstItem="LTO-jQ-AwW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3HE-Re-QDG" secondAttribute="leading" constant="30" id="qd1-bS-8w4"/>
                                 </constraints>

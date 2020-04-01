@@ -11,6 +11,8 @@ namespace demoseusapp.iOS.Platform
         private const string ACCESS_TOKEN = "ACCESS_TOKEN";
         private const string REFRESH_TOKEN = "REFRESH_TOKEN";
         private const string EXPIRES_IN = "EXPIRES_IN";
+        private const string USERID = "USERID";
+        private const string PASSWORD = "PASSWORD";
 
         public Storage()
         {
@@ -48,6 +50,28 @@ namespace demoseusapp.iOS.Platform
         public string GetExpiresIn()
         {
             return userDefaults.StringForKey(EXPIRES_IN);
+        }
+
+        public void SetUserId(string userId)
+        {
+            userDefaults.SetString(userId, USERID);
+            userDefaults.Synchronize();
+        }
+
+        public string GetUserId()
+        {
+            return userDefaults.StringForKey(USERID);
+        }
+
+        public void SetPassword(string password)
+        {
+            userDefaults.SetString(password, PASSWORD);
+            userDefaults.Synchronize();
+        }
+
+        public string GetPassword()
+        {
+            return userDefaults.StringForKey(PASSWORD);
         }
     }
 }

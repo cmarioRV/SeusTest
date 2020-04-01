@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using demoseusapp.Models;
 using demoseusapp.Services;
 using Newtonsoft.Json;
 
@@ -17,49 +18,53 @@ namespace demoseusapp.ViewModels
         public string UserMsg
         {
             get { return userMsg; }
-            set { SetProperty(ref userMsg, value); }
+            set { SetPropertyAlwaysFire(ref userMsg, value); }
         }
 
         public LoginViewModel(IStorage storage) : base(storage)
         {
             Title = "Login";
-            LoginActionCommand = new Command(async () => await ExecuteLoginActionCommand());
+            LoginActionCommand = new Command(async (user) => await ExecuteLoginActionCommand(user));
 
             cryptographic = new SHA256Cryptography();
         }
 
-        private async Task ExecuteLoginActionCommand()
+        private async Task ExecuteLoginActionCommand(object userObj)
         {
-            await Task.Factory.StartNew(() =>
+            if (userObj is UserModel userModel)
             {
-                if (IsBusy)
-                    return;
+                await Task.Factory.StartNew(() =>
+                {
+                    if (IsBusy)
+                        return;
 
-                IsBusy = true;
+                    IsBusy = true;
+                    ErrorMessage = string.Empty;
 
-                try
-                {
-                    Login();
-                }
-                catch (Exception ex)
-                {
-                    ErrorMessage = ex.Message;
-                }
-                finally
-                {
-                    IsBusy = false;
-                }
-            });
+                    try
+                    {
+                        Login(userModel.userId, userModel.password);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage = ex.Message;
+                    }
+                    finally
+                    {
+                        IsBusy = false;
+                    }
+                });
+            }
         }
 
-        private void Login()
+        private void Login(string user, string password)
         {
             string codeVerify = cryptographic.GenerateRandomValue(64);
             string codeChallenge = cryptographic.EncryptValue(codeVerify);
 
             UserMsg = "Autorizando...";
             AuthorizeResponse authorizeResponse = Repository.Authorize(codeChallenge);
-            AutenticateRequest autenticateRequest = CreateAutenticateRequest("C", "43209598", "4194", authorizeResponse.SessionId);
+            AutenticateRequest autenticateRequest = CreateAutenticateRequest("C", user, password, authorizeResponse.SessionId);
             UserMsg = "Autenticando...";
             AutenticateResponse autenticateResponse = GetAutenticateResponse(autenticateRequest);
             TokenRequest tokenRequest = CreateTokenRequest(codeVerify, autenticateResponse);
@@ -112,7 +117,7 @@ namespace demoseusapp.ViewModels
 
             if (!codeResponseValid)
             {
-                throw new Exception("Código inválido");
+                throw new Exception("Código inválido: " + codeResponse.ToString());
             }
 
             if ((autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))
