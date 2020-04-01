@@ -11,8 +11,8 @@ namespace demoseusapp
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => ServiceLocator.Instance.Get<IDataStore<Item>>() ?? new MockDataStore();
-
         public ISeusRepository Repository => ServiceLocator.Instance.Get<ISeusRepository>() ?? new MockSeusRepository();
+        protected IStorage storage;
 
         bool isBusy = false;
         public bool IsBusy
@@ -30,6 +30,7 @@ namespace demoseusapp
 
         public BaseViewModel(IStorage storage)
         {
+            this.storage = storage;
             Repository.SetStorage(storage);
         }
 

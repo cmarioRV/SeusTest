@@ -39,15 +39,15 @@ namespace demoseusapp.iOS.Platform
             return userDefaults.StringForKey(REFRESH_TOKEN);
         }
 
-        public void SetExpiresIn(long expiresIn)
+        public void SetExpiresIn(string expiresIn)
         {
-            userDefaults.SetFloat(expiresIn, EXPIRES_IN);
+            userDefaults.SetString(expiresIn, EXPIRES_IN);
             userDefaults.Synchronize();
         }
 
-        public long GetExpiresIn()
+        public string GetExpiresIn()
         {
-            return userDefaults.IntForKey(EXPIRES_IN);
+            return userDefaults.StringForKey(EXPIRES_IN);
         }
     }
 }

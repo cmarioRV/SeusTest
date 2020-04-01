@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace demoseusapp.iOS
 {
-	[Register ("InitialViewController")]
-	partial class InitialViewController
+	[Register ("DetailViewController")]
+	partial class DetailViewController
 	{
 		[Outlet]
 		UIKit.UILabel accessTokenLabel { get; set; }
@@ -45,63 +45,71 @@ namespace demoseusapp.iOS
 		[Outlet]
 		UIKit.UIButton updateButton { get; set; }
 
-		[Action ("hideLoadingViewAction:")]
-		partial void hideLoadingViewAction (Foundation.NSObject sender);
-		
-		void ReleaseDesignerOutlets ()
+		void ReleaseDesignerOutlets()
 		{
-			if (accessTokenLabel != null) {
-				accessTokenLabel.Dispose ();
+			if (accessTokenLabel != null)
+			{
+				accessTokenLabel.Dispose();
 				accessTokenLabel = null;
 			}
 
-			if (activityIndicatorView != null) {
-				activityIndicatorView.Dispose ();
+			if (activityIndicatorView != null)
+			{
+				activityIndicatorView.Dispose();
 				activityIndicatorView = null;
 			}
 
-			if (caduceTimeLabel != null) {
-				caduceTimeLabel.Dispose ();
+			if (caduceTimeLabel != null)
+			{
+				caduceTimeLabel.Dispose();
 				caduceTimeLabel = null;
 			}
 
-			if (dniLabel != null) {
-				dniLabel.Dispose ();
+			if (dniLabel != null)
+			{
+				dniLabel.Dispose();
 				dniLabel = null;
 			}
 
-			if (emailLabel != null) {
-				emailLabel.Dispose ();
+			if (emailLabel != null)
+			{
+				emailLabel.Dispose();
 				emailLabel = null;
 			}
 
-			if (msgLabel != null) {
-				msgLabel.Dispose ();
+			if (msgLabel != null)
+			{
+				msgLabel.Dispose();
 				msgLabel = null;
 			}
 
-			if (nameLabel != null) {
-				nameLabel.Dispose ();
+			if (nameLabel != null)
+			{
+				nameLabel.Dispose();
 				nameLabel = null;
 			}
 
-			if (refreshTokenLabel != null) {
-				refreshTokenLabel.Dispose ();
+			if (refreshTokenLabel != null)
+			{
+				refreshTokenLabel.Dispose();
 				refreshTokenLabel = null;
 			}
 
-			if (updateButton != null) {
-				updateButton.Dispose ();
+			if (updateButton != null)
+			{
+				updateButton.Dispose();
 				updateButton = null;
 			}
 
-			if (loadingView != null) {
-				loadingView.Dispose ();
+			if (loadingView != null)
+			{
+				loadingView.Dispose();
 				loadingView = null;
 			}
 
-			if (hideLoadingViewButton != null) {
-				hideLoadingViewButton.Dispose ();
+			if (hideLoadingViewButton != null)
+			{
+				hideLoadingViewButton.Dispose();
 				hideLoadingViewButton = null;
 			}
 		}

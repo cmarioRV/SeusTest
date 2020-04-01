@@ -1,59 +1,17 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using demoseusapp.Models;
 using demoseusapp.Services;
 using Newtonsoft.Json;
 
 namespace demoseusapp.ViewModels
 {
-    public class SeusViewModel: BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
-        public Command GetInfoActionCommand { get; set; }
+        public Command LoginActionCommand { get; set; }
 
         private readonly ICryptography cryptographic;
 
-        string accessToken = string.Empty;
-        public string AccessToken
-        {
-            get { return accessToken; }
-            set { SetProperty(ref accessToken, value); }
-        }
-
-        string refreshToken = string.Empty;
-        public string RefreshToken
-        {
-            get { return refreshToken; }
-            set { SetProperty(ref refreshToken, value); }
-        }
-
-        string validTime = string.Empty;
-        public string ValidTime
-        {
-            get { return validTime; }
-            set { SetProperty(ref validTime, value); }
-        }
-
-        string name = string.Empty;
-        public string Name
-        {
-            get { return name; }
-            set { SetProperty(ref name, value); }
-        }
-
-        string dni = string.Empty;
-        public string Dni
-        {
-            get { return dni; }
-            set { SetProperty(ref dni, value); }
-        }
-
-        string email = string.Empty;
-        public string Email
-        {
-            get { return email; }
-            set { SetProperty(ref email, value); }
-        }
+        public string ErrorMessage { get; set; }
 
         string userMsg = string.Empty;
         public string UserMsg
@@ -62,22 +20,15 @@ namespace demoseusapp.ViewModels
             set { SetProperty(ref userMsg, value); }
         }
 
-        bool thereWasAnError;
-        public bool ThereWasAnError
+        public LoginViewModel(IStorage storage) : base(storage)
         {
-            get { return thereWasAnError; }
-            set { SetProperty(ref thereWasAnError, value); }
-        }
-
-        public SeusViewModel(IStorage storage): base(storage)
-        {
-            Title = "Dummy";
-            GetInfoActionCommand = new Command(async() => await ExecuteGetInfoActionCommand());
+            Title = "Login";
+            LoginActionCommand = new Command(async () => await ExecuteLoginActionCommand());
 
             cryptographic = new SHA256Cryptography();
         }
 
-        private async Task ExecuteGetInfoActionCommand()
+        private async Task ExecuteLoginActionCommand()
         {
             await Task.Factory.StartNew(() =>
             {
@@ -85,45 +36,14 @@ namespace demoseusapp.ViewModels
                     return;
 
                 IsBusy = true;
-                ThereWasAnError = false;
 
                 try
                 {
-                    DateTime now = DateTime.Now;
-
-                    var expiresInString = string.IsNullOrEmpty(storage.GetExpiresIn()) ? "0" : storage.GetExpiresIn();
-
-                    var expirationDate = new DateTime(long.Parse(expiresInString));
-
-                    if (!string.IsNullOrEmpty(storage.GetAccessToken()) && now.CompareTo(expirationDate) > 0)
-                    {
-                        UserMsg = "Refrescando token...";
-                        StoreResponse(Repository.RefreshToken(storage.GetRefreshToken()));
-                    }
-                    else
-                    {
-                        //Login();
-
-                        UserMsg = "Obteniendo info del usuario...";
-                        UserInfoResponse userInfoResponse = Repository.GetUserInfo(storage.GetAccessToken());
-
-                        Name = userInfoResponse.FullName;
-                        Dni = userInfoResponse.Dni;
-                        Email = userInfoResponse.Email;
-                    }
-                }
-                catch (TaskCanceledException ex)
-                {
-                    Debug.WriteLine(ex);
-                    UserMsg = "Timeout";
-                    ThereWasAnError = true;
+                    Login();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
-                    UserMsg = ex.Message;
-                    storage.SetAccessToken("");
-                    ThereWasAnError = true;
+                    ErrorMessage = ex.Message;
                 }
                 finally
                 {
@@ -154,10 +74,6 @@ namespace demoseusapp.ViewModels
             storage.SetAccessToken(tokenResponse.AccessToken);
             storage.SetRefreshToken(tokenResponse.RefreshToken);
             storage.SetExpiresIn(DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).Ticks.ToString());
-
-            AccessToken = tokenResponse.AccessToken;
-            RefreshToken = tokenResponse.RefreshToken;
-            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLongTimeString();
         }
 
         public AutenticateRequest CreateAutenticateRequest(string documentType, string documentNumber, string password, string sessionId)
@@ -199,7 +115,7 @@ namespace demoseusapp.ViewModels
                 throw new Exception("Código inválido");
             }
 
-            if((autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))
+            if ((autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))
             {
                 throw new Exception("Respuesta de autenticación nula");
             }

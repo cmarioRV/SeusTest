@@ -45,6 +45,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\IStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserInfoResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Visitors\BaseRestConsumer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Repositories\" />

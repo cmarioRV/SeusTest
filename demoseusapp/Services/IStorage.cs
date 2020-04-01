@@ -8,7 +8,7 @@
         void SetRefreshToken(string refreshToken);
         string GetRefreshToken();
 
-        void SetExpiresIn(long expiresIn);
-        long GetExpiresIn();
+        void SetExpiresIn(string expiresIn);
+        string GetExpiresIn();
     }
 }
