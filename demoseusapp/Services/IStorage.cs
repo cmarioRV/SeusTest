@@ -16,5 +16,8 @@
 
         void SetExpiresIn(string expiresIn);
         string GetExpiresIn();
+
+        void SetEnvironment(string environment);
+        string GetEnvironment();
     }
 }

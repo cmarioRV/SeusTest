@@ -10,7 +10,6 @@ namespace demoseusapp
 {
     public abstract class BaseRestConsumer<TRequest, TResponse>
     {
-        private readonly ISeusRepository seusRepository;
         private readonly IStorage storage;
 
         private const string authorizationHeader = "X-APPTAG-TOKEN";
@@ -28,8 +27,6 @@ namespace demoseusapp
             {
                 Timeout = TimeSpan.FromSeconds(timeOutInSeconds)
             };
-
-            seusRepository = ServiceLocator.Instance.Get<ISeusRepository>();
         }
 
         public TResponse ConsumeRestService(TRequest requestObject, HttpRequestMessage request, Dictionary<string, string> headers = null, bool addAuthorization = true)

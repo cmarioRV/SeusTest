@@ -16,6 +16,12 @@ namespace demoseusapp.iOS
 		UIKit.UIActivityIndicatorView activityIndicator { get; set; }
 
 		[Outlet]
+		UIKit.UILabel environmentLabel { get; set; }
+
+		[Outlet]
+		UIKit.UIPickerView environmentPickerView { get; set; }
+
+		[Outlet]
 		UIKit.UIView loadingView { get; set; }
 
 		[Outlet]
@@ -35,19 +41,9 @@ namespace demoseusapp.iOS
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (userTextField != null) {
-				userTextField.Dispose ();
-				userTextField = null;
-			}
-
-			if (passwordTextField != null) {
-				passwordTextField.Dispose ();
-				passwordTextField = null;
-			}
-
-			if (loginButton != null) {
-				loginButton.Dispose ();
-				loginButton = null;
+			if (activityIndicator != null) {
+				activityIndicator.Dispose ();
+				activityIndicator = null;
 			}
 
 			if (loadingView != null) {
@@ -55,19 +51,39 @@ namespace demoseusapp.iOS
 				loadingView = null;
 			}
 
-			if (userMsgLabel != null) {
-				userMsgLabel.Dispose ();
-				userMsgLabel = null;
+			if (loginButton != null) {
+				loginButton.Dispose ();
+				loginButton = null;
 			}
 
-			if (activityIndicator != null) {
-				activityIndicator.Dispose ();
-				activityIndicator = null;
+			if (passwordTextField != null) {
+				passwordTextField.Dispose ();
+				passwordTextField = null;
 			}
 
 			if (popUpButton != null) {
 				popUpButton.Dispose ();
 				popUpButton = null;
+			}
+
+			if (userMsgLabel != null) {
+				userMsgLabel.Dispose ();
+				userMsgLabel = null;
+			}
+
+			if (userTextField != null) {
+				userTextField.Dispose ();
+				userTextField = null;
+			}
+
+			if (environmentPickerView != null) {
+				environmentPickerView.Dispose ();
+				environmentPickerView = null;
+			}
+
+			if (environmentLabel != null) {
+				environmentLabel.Dispose ();
+				environmentLabel = null;
 			}
 		}
 	}

@@ -123,6 +123,7 @@
     <Compile Include="ViewControllers\DetailViewController.designer.cs">
     <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\EnvironmentPickerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -135,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Platform\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="..\demoseusapp\demoseusapp.projitems" Label="Shared" Condition="Exists('..\demoseusapp\demoseusapp.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

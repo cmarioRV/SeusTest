@@ -117,7 +117,7 @@ namespace demoseusapp.ViewModels
 
             if (!codeResponseValid)
             {
-                throw new Exception("Código inválido: " + codeResponse.ToString());
+                throw new Exception(codeResponse.ToString());
             }
 
             if ((autenticateResponse == null && string.IsNullOrEmpty(autenticateResponse.Code)))

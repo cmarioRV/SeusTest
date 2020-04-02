@@ -47,10 +47,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Visitors\BaseRestConsumer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\UserModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\SeusEnvironment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\BaseSeusSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SeusLabSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\SeusPdnSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Repositories\" />
     <Folder Include="$(MSBuildThisFileDirectory)Repositories\Seus\" />
     <Folder Include="$(MSBuildThisFileDirectory)Crypt\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Common\" />
   </ItemGroup>
 </Project>

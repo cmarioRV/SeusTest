@@ -1,5 +1,4 @@
-﻿using System;
-using demoseusapp.Services;
+﻿using demoseusapp.Services;
 using Foundation;
 
 namespace demoseusapp.iOS.Platform
@@ -13,6 +12,7 @@ namespace demoseusapp.iOS.Platform
         private const string EXPIRES_IN = "EXPIRES_IN";
         private const string USERID = "USERID";
         private const string PASSWORD = "PASSWORD";
+        private const string ENVIRONMENT = "ENVIRONMENT";
 
         public Storage()
         {
@@ -72,6 +72,17 @@ namespace demoseusapp.iOS.Platform
         public string GetPassword()
         {
             return userDefaults.StringForKey(PASSWORD);
+        }
+
+        public void SetEnvironment(string environment)
+        {
+            userDefaults.SetString(environment, ENVIRONMENT);
+            userDefaults.Synchronize();
+        }
+
+        public string GetEnvironment()
+        {
+            return userDefaults.StringForKey(ENVIRONMENT);
         }
     }
 }

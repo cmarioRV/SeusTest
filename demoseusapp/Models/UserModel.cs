@@ -5,5 +5,6 @@ namespace demoseusapp.Models
     {
         public string userId { get; set; }
         public string password { get; set; }
+        public SeusEnvironment environment { get; set; }
     }
 }

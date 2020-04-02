@@ -123,7 +123,7 @@ namespace demoseusapp.ViewModels
 
             AccessToken = tokenResponse.AccessToken;
             RefreshToken = tokenResponse.RefreshToken;
-            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToLongTimeString();
+            ValidTime = DateTime.Now.AddSeconds(tokenResponse.ExpiresIn).ToString();
         }
     }
 }

@@ -10,7 +10,6 @@ namespace demoseusapp.iOS
     public partial class DetailViewController : UIViewController
 	{
         private SeusViewModel detailViewModel;
-        private bool thereWasAnError;
 
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
